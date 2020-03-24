@@ -11,15 +11,31 @@ function Painter() {
 		canvas.clear() 
 	};
 
-	$('drawing-color').onchange = function() {
-		canvas.freeDrawingBrush.color = this.value;
+	$('set-red').onclick = function() {
+		canvas.freeDrawingBrush.color = "red";
 	};
 
-	$('drawing-line-width').onchange = function() {
-		canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
-		this.previousSibling.innerHTML = this.value;
+	$('set-green').onclick = function() {
+		canvas.freeDrawingBrush.color = "green";
 	};
 
-   canvas.freeDrawingBrush.color = $('drawing-color').value;
-   canvas.freeDrawingBrush.width = parseInt($('drawing-line-width').value, 10) || 1;
+	$('set-yellow').onclick = function() {
+		canvas.freeDrawingBrush.color = "yellow";
+	};
+
+	$('set-small').onclick = function() {
+		canvas.freeDrawingBrush.width = 4;
+	};
+
+	$('set-medium').onclick = function() {
+		canvas.freeDrawingBrush.width = 10;
+	};
+
+	$('set-big').onclick = function() {
+		canvas.freeDrawingBrush.width = 20;
+	};
+
+   canvas.freeDrawingBrush.color = "red";
+   //canvas.freeDrawingBrush.width = parseInt($('drawing-line-width').value, 10) || 1;
+   canvas.freeDrawingBrush.width = 4;
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<script src="asset/jquery-3.3.1.min.js"></script>
+
+	<!-- https://purecss.io -->
+	<link href="asset/pure-min.css" rel="stylesheet">
+	<link href="asset/main.css" rel="stylesheet">
+
+	<!-- http://fabricjs.com/ -->
+	<script src="asset/fabric.js"></script>
+
+	<script src="asset/main.js"></script>
+	<script src="asset/painter.js"></script>
+
+
+</head>
+
+<body ondrop="drag_drop(event)" ondragover="return false">
+
+	<div id="video_layer">
+		<video id="video_player" ondragover="return false">
+			<source id="mp4" src="" type="video/mp4" >
+		</video>
+	</div>
+
+	<div id="canvas_layer">
+		<canvas id="c" width="1280" height="800"></canvas>
+	</div>
+	
+	<!-- https://www.w3schools.com/tags/ref_av_dom.asp -->
+	<div id="buttons_layer">
+		<span id="play_button"><button onclick="videoPlay()" class="pure-button pure-button-primary">Play</button></span>
+		<br/>
+		<span id="speed_button"><button onclick="videoPlaybackSlow()" class="pure-button pure-button-primary">100 %</button> </span>
+		<br/>
+		<button onclick="videoSeek(-1)" class="pure-button pure-button-primary">-1</button> 
+		<button onclick="videoSeek(1)" class="pure-button pure-button-primary">+1</button> 
+		<br/>
+
+		<!-- Drawing -->
+
+		<div>
+		<button id="clear-canvas" class="pure-button pure-button-primary">Clear</button><br>
+
+		<label for="drawing-line-width">Line width:</label>
+		<span class="info">4</span><input type="range" value="4" min="2" max="30" id="drawing-line-width"><br>
+
+		<label for="drawing-color">Line color:</label>
+		<input type="color" value="#FF0000" id="drawing-color"><br>
+
+		</div>
+		</div>
+	</div>
+
+</body>
+</html>

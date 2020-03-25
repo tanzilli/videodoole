@@ -18,6 +18,9 @@
 
 <body ondrop="drag_drop(event)" ondragover="return false">
 
+	<div id="video_time">
+	</div>
+
 	<div id="video_layer">
 		<video id="video_player" ondragover="return false">
 			<source id="mp4" src="" type="video/mp4" >
@@ -70,7 +73,7 @@
 	</div>
 	
 	<div id="slider_layer">
-		<input type="range" min="1" max="100" value="0" class="slider" id="myRange">
+		<input type="range" min="1" max="100" value="0" class="slider" id="video_progress_bar">
 	</div>
 
 </body>

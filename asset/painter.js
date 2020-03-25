@@ -1,5 +1,7 @@
+var canvas; 
+
 function Painter() {
-	var canvas = this.__canvas = new fabric.Canvas('c', {
+	canvas = this.__canvas = new fabric.Canvas('c', {
 		isDrawingMode: true,
 		selection: false
 	});

@@ -50,12 +50,26 @@ body {
 }
 
 
+#video_time {
+	position: absolute;
+	margin: 0px;
+	padding: 5px;
+	top: 30px;
+	left: 30px;
+	z-index: 3;
+	background: black;
+	color: white;
+	font-size: 40px;
+	font-weight: bold;
+	opacity: 0.5;
+}
+
 #videolist_layer {
 	position: absolute;
 	margin: 0px;
 	padding: 0px;
 	top: 30px;
-	left: 30px;
+	left: 140px;
 	z-index: 2;
 	visibility: hidden;
 }

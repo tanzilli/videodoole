@@ -25,37 +25,52 @@
 	</div>
 
 	<div id="canvas_layer">
-		<canvas id="c" width="1280" height="800"></canvas>
+		<canvas id="c" width="1920" height="1000"></canvas>
+	</div>
+
+	<div id="videolist_layer">
+		<button onclick="videoLoad('Alejandra Mantiñan & Mariano Otero - 1.m4v')" class="pure-button tango-button">Alejandra Mantinan & Mariano Otero - 1</button> <br>
+		<button onclick="videoLoad('Alejandra Mantiñan & Mariano Otero - 2.m4v')" class="pure-button tango-button">Alejandra Mantinan & Mariano Otero - 2</button> <br>
+		<button onclick="videoLoad('Ariadna Naveira & Ines Muzzopappa.m4v')" class="pure-button tango-button">Ariadna Naveira & Ines Muzzopappa</button> <br>
+		<button onclick="videoLoad('Cecilia Berra & Horacio Godoy.m4v')" class="pure-button tango-button">Cecilia Berra & Horacio Godoy</button> <br>
+		<button onclick="videoLoad('Corina Herrera & Ines Muzzopappa.m4v')" class="pure-button tango-button">Corina Herrera & Ines Muzzopappa</button><br> 
+		<button onclick="videoLoad('Los Hermanos Macana.m4v')" class="pure-button tango-button">Los Hermanos Macana</button> <br>
+		<button onclick="videoLoad('Michael Nadtochi & Eleonora Kalganova.m4v')" class="pure-button tango-button">Michael Nadtochi & Eleonora Kalganova</button><br> 
+		<button onclick="videoLoad('Sebastian Achaval & Roxana Suarez - 1.m4v')" class="pure-button tango-button">Sebastian Achaval & Roxana Suarex - 1</button> <br>
+		<button onclick="videoLoad('Sebastian Achaval & Roxana Suarez - 2.m4v')" class="pure-button tango-button">Sebastian Achaval & Roxana Suarex - 2</button> <br>
+		<button onclick="videoLoad('Sebastian Achaval & Roxana Suarez - 3.m4v')" class="pure-button tango-button">Sebastian Achaval & Roxana Suarex - 3</button> <br>
+		<button onclick="videoLoad('Sebastian Arce & Eleonora Kalganova.m4v')" class="pure-button tango-button">Sebastian Arce & Eleonora Kalganova</button> <br>
 	</div>
 	
 	<!-- https://www.w3schools.com/tags/ref_av_dom.asp -->
 	<div id="buttons_layer">
 		<span id="play_button"><button onclick="videoPlay()" class="pure-button pure-button-primary">Play</button></span>
-		<br/>
 		<span id="speed_button"><button onclick="videoPlaybackSlow()" class="pure-button pure-button-primary">100 %</button> </span>
-		<br/>
 		<button onclick="videoSeek(-1)" class="pure-button pure-button-primary">-1</button> 
 		<button onclick="videoSeek(1)" class="pure-button pure-button-primary">+1</button> 
-		<br/>
 
 		<!-- Drawing -->
-		<button id="clear-canvas" class="pure-button pure-button-primary">Clear</button><br>
+		<button id="clear-canvas" class="pure-button pure-button-primary">Clear</button>
 
 		<!-- Color -->
 		<button id="set-red" class="pure-button pure-button-primary button-red">Red</button>
 		<button id="set-green" class="pure-button pure-button-primary button-green">Green</button>
-		<button id="set-yellow" class="pure-button pure-button-primary button-yellow">Yellow</button><br>
+		<button id="set-yellow" class="pure-button pure-button-primary button-yellow">Yellow</button>
 
 		<!-- Size -->
 		<button id="set-small" class="pure-button pure-button-primary button-grey">Small</button>
 		<button id="set-medium" class="pure-button pure-button-primary button-grey">Medium</button>
-		<button id="set-big" class="pure-button pure-button-primary button-grey">Big</button><br>
+		<button id="set-big" class="pure-button pure-button-primary button-grey">Big</button>
 
 		<!-- Stick -->
 		<button id="stick" class="pure-button pure-button-primary">Stick</button>
-		<button id="draw" class="pure-button pure-button-primary">Draw ON</button><br>
+		<button id="draw" class="pure-button pure-button-primary">Draw ON</button>
 
 
+	</div>
+	
+	<div id="slider_layer">
+		<input type="range" min="1" max="100" value="0" class="slider" id="myRange">
 	</div>
 
 </body>

@@ -12,11 +12,10 @@ body {
 
 .pure-button {
 	width: 80px;
-	height: 30px;
+	height: 20px;
 	margin: 1px;
 	font-size: 80%;
 	border-radius: 3px;
-	text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
 .tango-button {
@@ -27,28 +26,6 @@ body {
 	background: grey;
 	text-align: left;
 }
-
-
-.button-red {
-	color: white;
-	background: red;
-}
-
-.button-green {
-	color: white;
-	background: green;
-}
-
-.button-yellow {
-	color: black;
-	background: yellow;
-}
-
-.button-grey {
-	color: white;
-	background: grey;
-}
-
 
 #video_time {
 	position: absolute;
@@ -68,10 +45,11 @@ body {
 	position: absolute;
 	margin: 0px;
 	padding: 0px;
-	top: 30px;
-	left: 140px;
+	top: 150px;
+	right: 140px;
 	z-index: 2;
 	visibility: hidden;
+	opacity: 0.8;
 }
 
 #video_layer {
@@ -99,9 +77,9 @@ body {
 	position: absolute;
 	margin: 0px;
 	padding: 0px;
-	bottom: 40px;
-	left: 10px;
-	right: 10px;
+	top: 30px;
+	left: 130px;
+	right: 100px;
 	z-index: 0;
 	display: block;
 
@@ -115,6 +93,7 @@ body {
 	bottom: 3px;
 	left: 10px;
 	z-index: 0;
+	/* visibility: hidden; */
 	/* transform: scale(0.5,0.5); */
 }
 
@@ -137,10 +116,10 @@ body {
 .slider {
   -webkit-appearance: none;
   width: 100%;
-  height: 25px;
-  background: #d3d3d3;
+  height: 20px;
+  background: grey;
   outline: none;
-  opacity: 0.7;
+  opacity: 0.3;
   -webkit-transition: .2s;
   transition: opacity .2s;
 }
@@ -152,15 +131,15 @@ body {
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   background: red;
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   background: #4CAF50;
   cursor: pointer;
 }

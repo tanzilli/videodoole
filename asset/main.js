@@ -1,4 +1,7 @@
 var vid;
+var start_loop = null;
+var end_loop = null;
+var loop_active = null;
 
 function fmtMSS(s){   // accepts seconds as Number or String. Returns m:ss
   return( s -         // take value s and subtract (will try to convert String to Number)
@@ -28,6 +31,8 @@ function videoToggle() {
 }
 
 function videoPlay() { 
+	$("#play").attr("style","background: grey;");
+	$("#play").html("Stop");
 	if (vid.playbackRate==1) {
 		vid.muted = false;
 	} else {
@@ -37,6 +42,8 @@ function videoPlay() {
 } 
 
 function videoPause() { 
+	$("#play").attr("style","background: lightblue;");
+	$("#play").html("Play");
 	vid.pause();
 } 
 
@@ -48,9 +55,13 @@ function videoToggleRate() {
 	if (vid.playbackRate == 1) {
 		vid.muted = true;
 		vid.playbackRate=0.5;
+		$("#play-rate").attr("style","background: lightblue;");
+		$("#play-rate").html("100%");
 	} else {
 		vid.muted = false;
 		vid.playbackRate=1;
+		$("#play-rate").attr("style","background: lightblue;");
+		$("#play-rate").html("50%");
 	}	
 } 
 
@@ -70,19 +81,23 @@ function videoLoad(filename) {
 		   // if the video is loaded and duration is known
 		   if(!isNaN(this.duration)) {
 				var percent_complete = this.currentTime / this.duration;
-				$("#video_time").html(fmtMSS(Math.floor(this.currentTime)));
-				$("#video_progress_bar").val(percent_complete*100);
+				$("#video-time").html(fmtMSS(Math.floor(this.currentTime)));
+				$("#video-progress-bar").val(percent_complete*100);
 				
 				// use percent_complete to draw a progress bar
+				
+				if (start_loop!=null && end_loop!=null && loop_active==true) {
+					if (this.currentTime>=end_loop) {
+						this.currentTime=start_loop;
+					}
+				}
 			}
 		});
 	}, false );
 
-
-
 	vid.load();
-	vid.play();
 	vid.playbackRate=1;
+	videoPlay();
 	$("#videolist_layer").css("visibility", "hidden")
 } 
 
@@ -101,11 +116,24 @@ function drag_drop(event) {
 	}, false );
 	
 	vid.load();
-	vid.play();
 	vid.playbackRate=1;
-	$("#play_button").html('<button onclick="videoPause()" class="pure-button pure-button-primary">Pause</button>');
+	videoPlay();
+	$("#videolist_layer").css("visibility", "hidden")
 }
 
+function videoLoop() {
+	if (loop_active==true) {
+		loop_active=false;
+		$("#video-loop").attr("style","background: grey;");
+		$("#video-loop").html("Loop [L]");
+	} else {
+		if (start_loop!=null && end_loop!=null) {
+			loop_active=true;
+			$("#video-loop").attr("style","background: red;");
+			$("#video-loop").html("Loop [L]");
+		}
+	}
+}
 
 function videoList(event) {
 	if ($("#videolist_layer").css("visibility")=="visible") {
@@ -117,6 +145,12 @@ function videoList(event) {
 
 $(document).ready(function() {
 	vid = document.getElementById("video_player");
+
+	range = document.getElementById("video-progress-bar");
+	range.addEventListener('input', function () {
+		// $("#comodo").html(range.value);
+		vid.currentTime = range.value * vid.duration / 100;
+	}, false);
 	
 	window.addEventListener("keydown", function (event) {
 		if (event.defaultPrevented) {
@@ -125,7 +159,19 @@ $(document).ready(function() {
 
 		switch (event.key) {
 
+		case "a":
+			start_loop=vid.currentTime;
+			break;
+
+		case "b":
+			end_loop=vid.currentTime;
+			break;
+
 		case "l":
+			videoLoop();
+			break;
+
+		case "v":
 			videoList();
 			break;
 
@@ -237,7 +283,7 @@ function Painter() {
 	}
 
 	function stick() {
-		var line = makeLine([ 250, 125, 250, 275 ]);
+		var line = makeLine([ 1980/2, 400,1980/2, 600 ]);
 		canvas.add(line);
 
 		canvas.add(

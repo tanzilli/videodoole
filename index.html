@@ -14,9 +14,8 @@
 </head>
 
 <body ondrop="drag_drop(event)" ondragover="return false">
-
-	<div id="video_time">
-	</div>
+	<div id="video-time"></div>
+	<div id="comodo"></div>
 
 	<div id="video_layer">
 		<video id="video_player" ondragover="return false">
@@ -25,7 +24,7 @@
 	</div>
 
 	<div id="canvas_layer">
-		<canvas id="c" width="1920" height="1000"></canvas>
+		<canvas id="c" width="1920" height="1080"></canvas>
 	</div>
 
 	<div id="videolist_layer">
@@ -44,11 +43,11 @@
 	
 	<!-- https://www.w3schools.com/tags/ref_av_dom.asp -->
 	<div id="buttons_layer">
-		<button onclick="videoToggle()" class="pure-button pure-button-primary">Play</button>
-		<button onclick="videoToggleRate()" class="pure-button pure-button-primary">Speed</button>
-		<button onclick="canvas.clear()" class="pure-button" style="background: #A7CA0C">Clear</button>
-		<button id="new-stick" class="pure-button pure-button-primary">New stick</button>
-		<button id="draw-edit" class="pure-button pure-button-primary">Draw/Edit</button>
+		<button id="play" onclick="videoToggle()" class="pure-button" style="background: lightblue">Play</button>
+		<button id="play-rate" onclick="videoToggleRate()" class="pure-button" style="background: lightblue">100%</button>
+		<button onclick="canvas.clear()" class="pure-button" style="background: #A7CA0C">Clear [C]</button>
+		<button id="new-stick" class="pure-button pure-button-primary">Stick</button>
+		<button id="draw-edit" class="pure-button pure-button-primary">Draw</button>
 		<button onclick="videoSeek(-1)" class="pure-button" style="background: #ff9933">-1</button>
 		<button onclick="videoSeek(1)" class="pure-button" style="background: #ff9933">+1</button>
 
@@ -56,13 +55,13 @@
 		<button id="set-red" class="pure-button pure-button-primary" style="background: red">Red</button>
 		<button id="set-green" class="pure-button pure-button-primary" style="background: green">Green</button>
 		<button id="set-yellow" class="pure-button pure-button-primary" style="background: yellow; color: black;">Yellow</button>
-		<button onclick="videoList()" class="pure-button pure-button-primary" style="background: magenta;">Video</button>
+		<button onclick="videoList()" class="pure-button pure-button-primary" style="background: magenta;">Video [V]</button>
+		<button id="video-loop"  onclick="videoLoop()" class="pure-button" style="background: grey;">Loop [L]</button>
 
 	</div>
 	
 	<div id="slider_layer">
-		<input type="range" min="1" max="100" value="0" class="slider" id="video_progress_bar">
+		<input type="range" min="1" max="100" value="0" class="slider" id="video-progress-bar">
 	</div>
-
 </body>
 </html>

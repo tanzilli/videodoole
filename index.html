@@ -2,6 +2,8 @@
 <html lang="it">
 <head>
 	<script src="asset/jquery-3.3.1.min.js"></script>
+	<script src="asset/paho-mqtt-min.js"></script>
+
 
 	<!-- https://purecss.io -->
 	<link href="asset/pure-min.css" rel="stylesheet">
@@ -13,7 +15,7 @@
 	<script src="asset/main.js"></script>
 </head>
 
-<body ondrop="drag_drop(event)" ondragover="return false">
+<body ondrop="drag_drop(event)" ondragover="return false"">
 	<div id="video-time"></div>
 	<div id="comodo"></div>
 
@@ -43,13 +45,11 @@
 	
 	<!-- https://www.w3schools.com/tags/ref_av_dom.asp -->
 	<div id="buttons_layer">
-		<button id="play" onclick="videoToggle()" class="pure-button" style="background: lightblue">Play</button>
-		<button id="play-rate" onclick="videoToggleRate()" class="pure-button" style="background: lightblue">100%</button>
-		<button onclick="canvas.clear()" class="pure-button" style="background: #A7CA0C">Clear [C]</button>
+		<button onclick="canvas.clear()" class="pure-button" style="background: red">Clear</button>
+		<button id="play-50" onclick="videoPlay50()" class="pure-button" style="background: green">Play 50%</button>
+		<button id="play-100" onclick="videoPlay100()" class="pure-button" style="background: blue">Play 100%</button>
 		<button id="new-stick" class="pure-button pure-button-primary">Stick</button>
 		<button id="draw-edit" class="pure-button pure-button-primary">Draw</button>
-		<button onclick="videoSeek(-1)" class="pure-button" style="background: #ff9933">-1</button>
-		<button onclick="videoSeek(1)" class="pure-button" style="background: #ff9933">+1</button>
 
 		<!-- Color -->
 		<button id="set-red" class="pure-button pure-button-primary" style="background: red">Red</button>

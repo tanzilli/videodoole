@@ -1,7 +1,36 @@
+var mqtt_broker="tangobox.local";
+var mqtt_port=1884;
 var vid;
 var start_loop = null;
 var end_loop = null;
 var loop_active = null;
+
+// Genera una stringa random di caratteri
+// Viane usata per le funzioni MQTT
+var randomString = function(length) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for(var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
+function onConnect() {
+	mqtt_mainpage_client.subscribe("tangobox");
+}
+
+function onMessageArrived(message) {
+	if (message.payloadString=="red") {
+		canvas.clear();
+	}
+	if (message.payloadString=="green") {
+		videoPlay50();
+	}
+	if (message.payloadString=="blue") {
+		videoPlay100();
+	}
+}	
 
 function fmtMSS(s){   // accepts seconds as Number or String. Returns m:ss
   return( s -         // take value s and subtract (will try to convert String to Number)
@@ -21,6 +50,41 @@ function hideAllLayers() {
 	console.log("HideAllLayer");
 	$("#video_layer").fadeOut();
 }
+
+function videoPlay100() {
+	if (vid.paused==true || vid.playbackRate==0.5) {
+		$("#play-100").html("Stop");
+		vid.playbackRate=1
+		vid.muted = false;
+		vid.play();
+		return;
+	}
+	
+	if (vid.paused==false) {
+		$("#play-100").html("Play 100%");
+		vid.pause();
+		return;
+	}
+}
+
+function videoPlay50() {
+	console.log(vid.paused);
+	console.log(vid.playbackRate);
+	if (vid.paused==true || vid.playbackRate==1) {
+		$("#play-50").html("Stop");
+		vid.playbackRate=0.5
+		vid.muted = true;
+		vid.play();
+		return;
+	}
+	
+	if (vid.paused==false) {
+		$("#play-50").html("Play 50%");
+		vid.pause();
+		return;
+	}
+}
+
 
 function videoToggle() { 
 	if (vid.paused) {
@@ -96,8 +160,7 @@ function videoLoad(filename) {
 	}, false );
 
 	vid.load();
-	vid.playbackRate=1;
-	videoPlay();
+	videoPlay100();
 	$("#videolist_layer").css("visibility", "hidden")
 } 
 
@@ -121,6 +184,7 @@ function drag_drop(event) {
 	$("#videolist_layer").css("visibility", "hidden")
 }
 
+
 function videoLoop() {
 	if (loop_active==true) {
 		loop_active=false;
@@ -129,6 +193,7 @@ function videoLoop() {
 	} else {
 		if (start_loop!=null && end_loop!=null) {
 			loop_active=true;
+			vid.currentTime=start_loop;
 			$("#video-loop").attr("style","background: red;");
 			$("#video-loop").html("Loop [L]");
 		}
@@ -144,14 +209,37 @@ function videoList(event) {
 }
 
 $(document).ready(function() {
+	// Interpretazione messaggi MQTT in arrivo
+	mqtt_mainpage_client = new Paho.MQTT.Client(mqtt_broker, Number(mqtt_port), "/ws",randomString(20));
+	mqtt_mainpage_client.onMessageArrived=onMessageArrived;
+	mqtt_mainpage_client.connect({
+		onSuccess:onConnect
+	});
+
 	vid = document.getElementById("video_player");
 
 	range = document.getElementById("video-progress-bar");
 	range.addEventListener('input', function () {
-		// $("#comodo").html(range.value);
 		vid.currentTime = range.value * vid.duration / 100;
 	}, false);
+
+	document.getElementById("video_player").addEventListener("click", function(){
+		alert("Hello World");
+	});
+
 	
+	window.addEventListener("mousewheel", function (event) {
+		event.preventDefault();
+	
+		var y = event.deltaY;
+	
+		if (y<0) {
+			vid.currentTime=vid.currentTime-0.1;
+		} else {
+			vid.currentTime=vid.currentTime+0.1;
+		}
+	}, {passive: false});
+
 	window.addEventListener("keydown", function (event) {
 		if (event.defaultPrevented) {
 			return; // Do nothing if the event was already processed

@@ -4,6 +4,9 @@ var vid;
 var start_loop = null;
 var end_loop = null;
 var loop_active = null;
+var canvas; 
+var line=null;
+
 
 // Genera una stringa random di caratteri
 // Viane usata per le funzioni MQTT
@@ -22,13 +25,20 @@ function onConnect() {
 
 function onMessageArrived(message) {
 	if (message.payloadString=="red") {
-		canvas.clear();
+		console.log("red");
+		canvasClear();
 	}
 	if (message.payloadString=="green") {
+		console.log("green");
 		videoPlay50();
 	}
 	if (message.payloadString=="blue") {
+		console.log("blue");
 		videoPlay100();
+	}
+	if (message.payloadString=="yellow") {
+		console.log("yellow");
+		toggleDraw();
 	}
 }	
 
@@ -68,8 +78,6 @@ function videoPlay100() {
 }
 
 function videoPlay50() {
-	console.log(vid.paused);
-	console.log(vid.playbackRate);
 	if (vid.paused==true || vid.playbackRate==1) {
 		$("#play-50").html("Stop");
 		vid.playbackRate=0.5
@@ -85,49 +93,9 @@ function videoPlay50() {
 	}
 }
 
-
-/*function videoToggle() { 
-	if (vid.paused) {
-		videoPlay();
-	} else {
-		videoPause();
-	}
-}*/
-
-/*function videoPlay() { 
-	$("#play").attr("style","background: grey;");
-	$("#play").html("Stop");
-	if (vid.playbackRate==1) {
-		vid.muted = false;
-	} else {
-		vid.muted = true;
-	}	
-	vid.play();
-} */
-
-/*function videoPause() { 
-	$("#play").attr("style","background: lightblue;");
-	$("#play").html("Play");
-	vid.pause();
-}*/ 
-
 function videoSeek(value) { 
 	vid.currentTime=vid.currentTime+value;
 } 
-
-/*function videoToggleRate() { 
-	if (vid.playbackRate == 1) {
-		vid.muted = true;
-		vid.playbackRate=0.5;
-		$("#play-rate").attr("style","background: lightblue;");
-		$("#play-rate").html("100%");
-	} else {
-		vid.muted = false;
-		vid.playbackRate=1;
-		$("#play-rate").attr("style","background: lightblue;");
-		$("#play-rate").html("50%");
-	}	
-}*/ 
 
 function videoLoad(filename) {
 	console.log(filename);
@@ -139,7 +107,6 @@ function videoLoad(filename) {
 		// retrieve dimensions
 		let height = this.videoHeight;
 		let width = this.videoWidth;
-		Painter();
 
 		vid.addEventListener("timeupdate", function() {
 		   // if the video is loaded and duration is known
@@ -175,7 +142,6 @@ function drag_drop(event) {
 		// retrieve dimensions
 		let height = this.videoHeight;
 		let width = this.videoWidth;
-		Painter();
 	}, false );
 	
 	vid.load();
@@ -206,6 +172,21 @@ function videoList(event) {
 		$("#videolist_layer").css("visibility", "visible")
 	} 
 }
+
+function toggleDraw() {
+	if (canvas.isDrawingMode==true) {
+		canvas.isDrawingMode=false;
+	} else {
+		canvas.isDrawingMode=true;
+		
+		if (line!=null) {
+			canvas.remove(line);
+			line=null;
+			canvas.renderAll();
+		}
+	}
+}
+
 
 $(document).ready(function() {
 	// Interpretazione messaggi MQTT in arrivo
@@ -267,7 +248,7 @@ $(document).ready(function() {
 			break;
 
 		case "c":
-			canvas.clear(); 
+			canvasClear(); 
 			break;
 
 		case "ArrowDown":
@@ -291,19 +272,17 @@ $(document).ready(function() {
 		event.preventDefault();
 	}, true);
 
+	//****************************
+	// Drawing
+	//****************************
 
-});
-
-
-var canvas; 
-
-function Painter() {
 	canvas = this.__canvas = new fabric.Canvas('c', {
-		isDrawingMode: true,
-		selection: false
+		isDrawingMode: false,
+		selection: false,
 	});
-
 	fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+	canvas.freeDrawingBrush.color = "red";
+	canvas.freeDrawingBrush.width = 4;
 
 	$('#set-red').click (function() {
 		canvas.freeDrawingBrush.color = "red";
@@ -317,76 +296,101 @@ function Painter() {
 		canvas.freeDrawingBrush.color = "yellow";
 	});
 
-	$('#set-small').click(function() {
-		canvas.freeDrawingBrush.width = 4;
-	});
+	// http://fabricjs.com/events 
+	//canvas.isDrawingMode=false
 
-	$('#set-medium').click(function() {
-		canvas.freeDrawingBrush.width = 10;
-	});
-
-	$('#set-big').click(function() {
-		canvas.freeDrawingBrush.width = 20;
-	});
-
-	$('#new-stick').click(function() {
-		canvas.isDrawingMode=false;
-		stick();
-	});
-
-	$('#draw-edit').click(function() {
+	canvas.on('mouse:down', function(e) {
 		if (canvas.isDrawingMode==true) {
-			canvas.isDrawingMode=false;
+			line=null;
+			return;
+		}
+		if (line==null) {
+			line = myLine([ e.pointer.x,e.pointer.y,e.pointer.x,e.pointer.y]);
+			canvas.add(line);
+			canvas.renderAll();
 		} else {
-			canvas.isDrawingMode=true;
-		}	
+			line=null;
+		}
+		canvas.forEachObject(function(object){ 
+			object.selectable = false; 
+		});
+
 	});
 
-	function makeLine(coords) {
-		return new fabric.Line(coords, {
-			fill: canvas.freeDrawingBrush.color,
-			stroke: canvas.freeDrawingBrush.color,
-			strokeWidth: 5,
-			selectable: false,
-			evented: false,
-		});
-	}
-
-	function makeCircle(left, top, line1, line2) {
-		var c = new fabric.Circle({
-			left: left,
-			top: top,
-			strokeWidth: 4,
-			radius: 8,
-			fill: '#fff',
-			stroke: '#666'
-		});
-		c.hasControls = c.hasBorders = false;
-
-		c.line1 = line1;
-		c.line2 = line2;
-
-		return c;
-	}
-
-	function stick() {
-		var line = makeLine([ 1980/2, 400,1980/2, 600 ]);
-		canvas.add(line);
-
-		canvas.add(
-			makeCircle(line.get('x1'), line.get('y1'), null, line),
-			makeCircle(line.get('x2'), line.get('y2'), line),
-		);
-
-		canvas.on('object:moving', function(e) {
-			var p = e.target;
-			p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
-		    p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+	canvas.on('mouse:move', function(e) {
+		if (line!=null) {
+			line.set({ 'x2': e.pointer.x, 'y2': e.pointer.y })
 			canvas.renderAll();
-		});
-	}
+		}
 
-   canvas.freeDrawingBrush.color = "red";
-   canvas.freeDrawingBrush.width = 4;
-   
+		canvas.forEachObject(function(object){ 
+			object.selectable = false; 
+		});
+
+
+	});
+});
+
+function canvasClear() {
+	line=null;
+	canvas.clear(); 
 }
+
+function myLine(coords) {
+	return new fabric.Line(coords, {
+		fill: canvas.freeDrawingBrush.color,
+		stroke: canvas.freeDrawingBrush.color,
+		strokeWidth: 5,
+		selectable: false,
+		evented: false,
+	});
+}
+
+function myCircle(x,y) {
+	var c = new fabric.Circle({
+		left: x,
+		top: y,
+		strokeWidth: 5,
+		radius: 8,
+		fill: '#fff',
+		stroke: '#666'
+	});
+	return c;
+}
+
+
+function makeCircle(left, top, line1, line2) {
+	var c = new fabric.Circle({
+		left: left,
+		top: top,
+		strokeWidth: 4,
+		radius: 8,
+		fill: '#fff',
+		stroke: '#666'
+	});
+	c.hasControls = c.hasBorders = false;
+
+	c.line1 = line1;
+	c.line2 = line2;
+
+	return c;
+}
+
+function stick() {
+	var line = makeLine([ 1980/2, 400,1980/2, 600 ]);
+	canvas.add(line);
+
+	canvas.add(
+		makeCircle(line.get('x1'), line.get('y1'), null, line),
+		makeCircle(line.get('x2'), line.get('y2'), line),
+	);
+
+	canvas.on('object:moving', function(e) {
+		var p = e.target;
+		p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
+		p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+		canvas.renderAll();
+	});
+
+}
+

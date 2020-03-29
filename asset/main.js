@@ -86,15 +86,15 @@ function videoPlay50() {
 }
 
 
-function videoToggle() { 
+/*function videoToggle() { 
 	if (vid.paused) {
 		videoPlay();
 	} else {
 		videoPause();
 	}
-}
+}*/
 
-function videoPlay() { 
+/*function videoPlay() { 
 	$("#play").attr("style","background: grey;");
 	$("#play").html("Stop");
 	if (vid.playbackRate==1) {
@@ -103,19 +103,19 @@ function videoPlay() {
 		vid.muted = true;
 	}	
 	vid.play();
-} 
+} */
 
-function videoPause() { 
+/*function videoPause() { 
 	$("#play").attr("style","background: lightblue;");
 	$("#play").html("Play");
 	vid.pause();
-} 
+}*/ 
 
 function videoSeek(value) { 
 	vid.currentTime=vid.currentTime+value;
 } 
 
-function videoToggleRate() { 
+/*function videoToggleRate() { 
 	if (vid.playbackRate == 1) {
 		vid.muted = true;
 		vid.playbackRate=0.5;
@@ -127,7 +127,7 @@ function videoToggleRate() {
 		$("#play-rate").attr("style","background: lightblue;");
 		$("#play-rate").html("50%");
 	}	
-} 
+}*/ 
 
 function videoLoad(filename) {
 	console.log(filename);
@@ -179,8 +179,7 @@ function drag_drop(event) {
 	}, false );
 	
 	vid.load();
-	vid.playbackRate=1;
-	videoPlay();
+	videoPlay100();
 	$("#videolist_layer").css("visibility", "hidden")
 }
 
@@ -264,7 +263,7 @@ $(document).ready(function() {
 			break;
 
 		case " ":
-			videoToggle();
+			videoPlay100();
 			break;
 
 		case "c":

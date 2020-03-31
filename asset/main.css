@@ -16,14 +16,16 @@ body {
 	margin: 1px;
 	font-size: 80%;
 	border-radius: 3px;
+	color: white;
+	background-color: transparent; 
 }
 
 .tango-button {
-	font-size: 150%;
+	font-size: 100%;
 	width: 500px;
-	height: 60px;
+	height: 40px;
 	color: white;
-	background: grey;
+	background: #006600;
 	text-align: left;
 }
 
@@ -53,7 +55,7 @@ body {
 	font-size: 40px;
 	font-weight: bold;
 	opacity: 0.5;
-	visibility: hidden;
+	  visibility: hidden;
 }
 
 
@@ -78,6 +80,30 @@ body {
 	height: 1080px;
 	z-index: 0;
 }
+
+#video_player {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	display: block;
+}
+
+.zoom {
+	-moz-transform:scale(2);
+	-webkit-transform:scale(2);
+	-o-transform:scale(2);
+	-ms-transform:scale(2);
+	transform:scale(2);
+}
+
+.no-zoom {
+	-moz-transform:scale(1);
+	-webkit-transform:scale(1);
+	-o-transform:scale(1);
+	-ms-transform:scale(1);
+	transform:scale(1);
+}
+
 
 #canvas_layer {
 	position: absolute;
@@ -120,12 +146,6 @@ body {
 	/* border: 1px solid red; */
 }
 
-#video_player {
-	margin: 0px;
-	padding: 0px;
-	width: 100%;
-	display: inline;
-}
 
 .slidecontainer {
   width: 100%;

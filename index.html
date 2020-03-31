@@ -15,17 +15,17 @@
 	<script src="asset/main.js"></script>
 </head>
 
-<body ondrop="drag_drop(event)" ondragover="return false"">
+<body ondrop="drag_drop(event)" ondragover="return false"" >
 	<div id="video-time"></div>
 	<div id="comodo"></div>
 
-	<div id="video_layer">
+	<div id="video_layer" >
 		<video id="video_player" ondragover="return false">
-			<source id="mp4" src="" type="video/mp4" >
+			<source id="mp4" src="video/monoscopio.m4v" type="video/mp4" >
 		</video>
 	</div>
 
-	<div id="canvas_layer">
+	<div id="canvas_layer" onmousemove="getMousePosition(event)">
 		<canvas id="c" width="1920" height="1080"></canvas>
 	</div>
 
@@ -41,20 +41,21 @@
 		<button onclick="videoLoad('Sebastian Achaval & Roxana Suarez - 2.m4v')" class="pure-button tango-button">Sebastian Achaval & Roxana Suarex - 2</button> <br>
 		<button onclick="videoLoad('Sebastian Achaval & Roxana Suarez - 3.m4v')" class="pure-button tango-button">Sebastian Achaval & Roxana Suarex - 3</button> <br>
 		<button onclick="videoLoad('Sebastian Arce & Eleonora Kalganova.m4v')" class="pure-button tango-button">Sebastian Arce & Eleonora Kalganova</button> <br>
+		<button onclick="videoLoad('monoscopio.m4v')" class="pure-button tango-button">Monoscopio</button> <br>
 	</div>
 	
 	<!-- https://www.w3schools.com/tags/ref_av_dom.asp -->
 	<div id="buttons_layer">
-		<button onclick="canvas.clear()" class="pure-button" style="background: red">Clear</button>
-		<button id="play-50" onclick="videoPlay50()" class="pure-button" style="background: green">Play 50%</button>
-		<button id="play-100" onclick="videoPlay100()" class="pure-button" style="background: blue">Play 100%</button>
+		<button onclick="canvas.clear()" class="pure-button">Clear [C]</button>
+		<button id="play-50" onclick="videoPlay50()" class="pure-button">Play 50%</button>
+		<button id="play-100" onclick="videoPlay100()" class="pure-button">Play 100%</button>
+		<button onclick="videoList()" class="pure-button">Video [V]</button>
 
 		<!-- Color -->
-		<button id="set-red" class="pure-button pure-button-primary" style="background: red">Red</button>
-		<button id="set-green" class="pure-button pure-button-primary" style="background: green">Green</button>
-		<button id="set-yellow" class="pure-button pure-button-primary" style="background: yellow; color: black;">Yellow</button>
-		<button onclick="videoList()" class="pure-button pure-button-primary" style="background: magenta;">Video [V]</button>
-		<button id="video-loop"  onclick="videoLoop()" class="pure-button" style="background: grey;">Loop [L]</button>
+		<button id="set-red" class="pure-button" style="color: red">Red</button>
+		<button id="set-green" class="pure-button" style="color: green">Green</button>
+		<button id="set-yellow" class="pure-button" style="color: yellow">Yellow</button>
+		<!--<button id="video-loop"  onclick="videoLoop()" class="pure-button" style="background: grey;">Loop [L]</button>-->
 
 	</div>
 	

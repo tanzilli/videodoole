@@ -1,4 +1,5 @@
-var mqtt_broker="tangobox.local";
+//var mqtt_broker="tangobox.local";
+var mqtt_broker="mqttbox.local";
 var mqtt_port=1884;
 var vid;
 var start_loop = null;
@@ -6,6 +7,9 @@ var end_loop = null;
 var loop_active = null;
 var canvas; 
 var line=null;
+var zoom=false;
+var mouse_xpos
+var mouse_ypos;
 
 
 // Genera una stringa random di caratteri
@@ -39,6 +43,9 @@ function onMessageArrived(message) {
 	if (message.payloadString=="yellow") {
 		console.log("yellow");
 		toggleDraw();
+	}
+	if (message.payloadString=="black") {
+		videoZoom();
 	}
 }	
 
@@ -149,7 +156,6 @@ function drag_drop(event) {
 	$("#videolist_layer").css("visibility", "hidden")
 }
 
-
 function videoLoop() {
 	if (loop_active==true) {
 		loop_active=false;
@@ -187,6 +193,25 @@ function toggleDraw() {
 	}
 }
 
+function videoZoom() {
+	if (zoom==false) {
+		zoom=true;
+		var left=0-(mouse_xpos-(1920/2))*2;
+		var top= 0-(mouse_ypos-(1080/2))*2;
+		$("#video_layer").attr("style","top:" + top.toString() + "px;left:" + left.toString() + "px");
+		$("#video_layer").attr("class","zoom");
+	} else {
+		zoom=false;
+		$("#video_layer").attr("style","top:0px;left:0px");
+		$("#video_layer").attr("class","no-zoom");
+	}
+}
+
+function getMousePosition(e) {
+	mouse_xpos = e.clientX;
+	mouse_ypos = e.clientY;
+	$("#comodo").html(mouse_xpos + " " + mouse_ypos);
+}
 
 $(document).ready(function() {
 	// Interpretazione messaggi MQTT in arrivo
@@ -273,6 +298,44 @@ $(document).ready(function() {
 	}, true);
 
 	//****************************
+	// Mouse Event
+	//****************************
+
+	// Right mouse button click
+	window.addEventListener("contextmenu", function (event) {
+		event.preventDefault();
+   	}, false);
+
+	// Left mouse button doubleclick
+	window.addEventListener("dblclick", function (event) {
+		event.preventDefault();
+		canvasClear(); 
+   	}, false);
+
+	window.addEventListener("mousedown", function (event) {
+		switch (event.which) {
+			// Mouse wheel button click
+			case 2:
+				event.preventDefault();
+				videoPlay100();
+				break;
+			case 3:
+				event.preventDefault();
+				videoZoom(); 
+				break;
+			case 4:
+				event.preventDefault();
+				videoPlay50();
+				break;
+			case 5:
+				event.preventDefault();
+				videoPlay50();
+				break;
+		}
+	}, false);
+
+
+	//****************************
 	// Drawing
 	//****************************
 
@@ -300,6 +363,7 @@ $(document).ready(function() {
 	//canvas.isDrawingMode=false
 
 	canvas.on('mouse:down', function(e) {
+
 		if (canvas.isDrawingMode==true) {
 			line=null;
 			return;
